@@ -1,3 +1,5 @@
+![Build Status](https://github.com/danibranas/stream-pipeline-php/workflows/Build/badge.svg)
+
 # Stream Pipeline
 
 A Stream based pipeline pattern implementation.
