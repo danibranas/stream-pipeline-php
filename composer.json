@@ -15,7 +15,7 @@
   ],
   "minimum-stability": "stable",
   "scripts": {
-    "test": "phpunit"
+    "test": "vendor/bin/phpunit"
   },
   "autoload": {
     "psr-0": {
