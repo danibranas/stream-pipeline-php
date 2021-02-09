@@ -6,8 +6,8 @@ use Stream\Operations\Logical;
 use Generator;
 
 /**
- * Class ArrayStream
- * @package ArrayStream
+ * Class Stream
+ * @package Stream
  */
 class Stream implements StreamInterface
 {
