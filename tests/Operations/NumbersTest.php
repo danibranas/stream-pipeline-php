@@ -4,8 +4,8 @@
 namespace Operations;
 
 
-use Stream\Stream;
-use Stream\Operations\Numbers;
+use StreamPipeline\Stream;
+use StreamPipeline\Operations\Numbers;
 use PHPUnit\Framework\TestCase;
 
 final class NumbersTest extends TestCase

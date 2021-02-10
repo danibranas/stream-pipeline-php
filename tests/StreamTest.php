@@ -1,11 +1,11 @@
 <?php
 
-use Stream\Collectors;
-use Stream\Stream;
-use Stream\Iterators\NumberGenerator;
-use Stream\Operations\Numbers;
-use Stream\Operations\Strings;
-use Stream\Operations\Values;
+use StreamPipeline\Collectors;
+use StreamPipeline\Stream;
+use StreamPipeline\Iterators\NumberGenerator;
+use StreamPipeline\Operations\Numbers;
+use StreamPipeline\Operations\Strings;
+use StreamPipeline\Operations\Values;
 use PHPUnit\Framework\TestCase;
 
 final class StreamTest extends TestCase

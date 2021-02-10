@@ -1,9 +1,9 @@
 <?php
 
 
-use Stream\Stream;
+use StreamPipeline\Stream;
 use PHPUnit\Framework\TestCase;
-use Stream\Collectors;
+use StreamPipeline\Collectors;
 
 final class CollectorsTest extends TestCase
 {

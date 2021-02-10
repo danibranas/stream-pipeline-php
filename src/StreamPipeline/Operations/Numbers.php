@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Stream\Operations;
+namespace StreamPipeline\Operations;
 
 
 final class Numbers

@@ -4,8 +4,8 @@
 namespace Operations;
 
 
-use Stream\Stream;
-use Stream\Operations\Logical;
+use StreamPipeline\Stream;
+use StreamPipeline\Operations\Logical;
 use PHPUnit\Framework\TestCase;
 
 final class LogicalTest extends TestCase

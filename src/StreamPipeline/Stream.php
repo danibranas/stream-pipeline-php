@@ -1,13 +1,14 @@
 <?php
 
-namespace Stream;
+namespace StreamPipeline;
 
-use Stream\Operations\Logical;
+use StreamPipeline\Operations\Logical;
 use Generator;
 
 /**
  * Class Stream
- * @package Stream
+ *
+ * Main class for Stream pipeline
  */
 class Stream implements StreamInterface
 {

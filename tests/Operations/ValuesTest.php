@@ -4,8 +4,8 @@
 namespace Operations;
 
 
-use Stream\Stream;
-use Stream\Operations\Values;
+use StreamPipeline\Stream;
+use StreamPipeline\Operations\Values;
 use PHPUnit\Framework\TestCase;
 
 final class ValuesTest extends TestCase

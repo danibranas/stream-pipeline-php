@@ -51,7 +51,7 @@ composer require dbrans/stream-pipeline
 After this runs successfully, you can include the main class in your application logic:
 
 ```php
-use Stream\Stream;
+use StreamPipeline\Stream;
 ```
 
 ## Usage
@@ -59,7 +59,7 @@ use Stream\Stream;
 You can initialize an _Stream_ to use it:
 
 ```php
-use Stream\Stream;
+use StreamPipeline\Stream;
 
 $arrStream = Stream::fromIterable($myArray);
 // or
@@ -69,9 +69,9 @@ $arrStream = Stream::of(' B1 ', ' B2', 'a1 ', ' a2 ', 'a3', ' b1', ' b2', 'b3')
 A _Stream_ object exposes several methods to operate with its elements:
 
 ```php
-use Stream\Collectors;
-use Stream\Iterators\NumberGenerator;
-use Stream\Operations\Strings;
+use StreamPipeline\Collectors;
+use StreamPipeline\Iterators\NumberGenerator;
+use StreamPipeline\Operations\Strings;
 
 // ...
 

@@ -1,11 +1,8 @@
 <?php
 
-namespace Stream\Iterators;
+namespace StreamPipeline\Iterators;
 
-/**
- * Class NumberGenerator
- * @package ArrayStream\Iterators
- */
+
 class NumberGenerator
 {
     /** @var int|float */

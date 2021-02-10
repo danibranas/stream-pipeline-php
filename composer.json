@@ -1,7 +1,7 @@
 {
   "name": "dbrans/stream-pipeline",
   "description": "A Stream based pipeline pattern implementation",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "library",
   "require": {
     "php": ">=7.3"
@@ -19,7 +19,7 @@
   },
   "autoload": {
     "psr-0": {
-      "Stream": "src"
+      "StreamPipeline": "src"
     }
   },
   "require-dev": {

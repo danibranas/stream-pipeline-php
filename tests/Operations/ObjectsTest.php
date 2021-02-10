@@ -4,8 +4,8 @@ namespace Operations;
 
 require_once 'User.php';
 
-use Stream\Stream;
-use Stream\Operations\Objects;
+use StreamPipeline\Stream;
+use StreamPipeline\Operations\Objects;
 use PHPUnit\Framework\TestCase;
 
 final class ObjectsTest extends TestCase

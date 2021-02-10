@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Stream;
+namespace StreamPipeline;
 
 
 class Collectors

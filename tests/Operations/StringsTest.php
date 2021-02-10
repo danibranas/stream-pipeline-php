@@ -2,8 +2,8 @@
 
 namespace Operations;
 
-use Stream\Stream;
-use Stream\Operations\Strings;
+use StreamPipeline\Stream;
+use StreamPipeline\Operations\Strings;
 use PHPUnit\Framework\TestCase;
 
 final class StringsTest extends TestCase

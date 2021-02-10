@@ -1,6 +1,6 @@
 <?php
 
-namespace Stream;
+namespace StreamPipeline;
 
 use Countable;
 
@@ -8,8 +8,6 @@ use Countable;
  * Interface StreamInterface
  *
  * A sequence of elements supporting sequential and aggregate operations.
- *
- * @package Stream
  */
 interface StreamInterface extends Countable
 {
