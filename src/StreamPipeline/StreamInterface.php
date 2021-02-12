@@ -3,13 +3,14 @@
 namespace StreamPipeline;
 
 use Countable;
+use IteratorAggregate;
 
 /**
  * Interface StreamInterface
  *
  * A sequence of elements supporting sequential and aggregate operations.
  */
-interface StreamInterface extends Countable
+interface StreamInterface extends Countable, IteratorAggregate
 {
     /**
      * Returns a pipeline whose elements are the specified values.
@@ -90,6 +91,24 @@ interface StreamInterface extends Countable
      * @return StreamInterface the new pipeline
      */
     public function distinct(?callable $distinctBy = null): StreamInterface;
+
+    /**
+     * Returns a pipeline consisting of the results of replacing each element of this stream with the contents of a
+     * iterable object produced by applying the provided mapping operation to each element.
+     *
+     * @param callable|null $operation an optional function to convert the element.
+     * @return StreamInterface the new pipeline
+     */
+    public function flatMap(?callable $operation = null): StreamInterface;
+
+    /**
+     * Returns a pipeline consisting of the concatenation of the elements of this stream with the elements of the
+     * provided iterable.
+     *
+     * @param iterable|Stream $elements elements to concatenate.
+     * @return StreamInterface the new pipeline
+     */
+    public function concat(iterable $elements): StreamInterface;
 
     /**
      * Returns the first element of this pipeline.

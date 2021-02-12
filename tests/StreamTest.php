@@ -343,4 +343,99 @@ final class StreamTest extends TestCase
             });
         $this->assertEquals(null, $result);
     }
+
+    public function testFlatMapOperation()
+    {
+        $users = [
+            [1, 2, 3, 4, 5],
+            [6, 7, 8, 9, 0],
+            [9, 9, 8, 8, 7],
+        ];
+
+        $result = Stream::fromIterable($users)
+            ->flatMap()
+            ->toArray();
+        $this->assertEquals([1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 9, 9, 8, 8, 7], $result);
+
+        $user = [
+            'getNumbers' => function (int $mul): iterable {
+                return [$mul, 2 * $mul, 3 * $mul, 4 * $mul, 5 * $mul];
+            }
+        ];
+
+        $result = Stream::of($user, $user, $user)
+            ->flatMap(function ($u, $i) {
+                return $u['getNumbers']($i);
+            })
+            ->toArray();
+        $this->assertEquals([0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 2, 4, 6, 8, 10], $result);
+
+        $users = [
+            [
+                [1, 2, 3, 4, 5]
+            ],
+            [
+                [6, 7, 8, 9, 0],
+            ],
+            [
+                [9, 9, 8, 8, 7],
+            ],
+        ];
+
+        $result = Stream::of(1, 2, 3)
+            ->flatMap(function ($e) {
+                return Stream::of($e, $e * 2, $e * 3);
+            })
+            ->limit(14)
+            ->toArray();
+        $this->assertEquals([1, 2, 3, 2, 4, 6, 3, 6, 9], $result);
+
+
+        $result = Stream::fromIterable($users)
+            ->flatMap()
+            ->flatMap()
+            ->limit(14)
+            ->toArray();
+        $this->assertEquals([1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 9, 9, 8, 8], $result);
+    }
+
+    public function testTraversableStream()
+    {
+        $stream = Stream::of(0, 2, 4, 6, 8, 10, 12)->limit(5);
+
+        foreach ($stream as $i => $item) {
+            $this->assertEquals($i * 2, $item);
+        }
+
+        $stream = Stream::of(0, 2, 4, 6, 8, 10, 12)->limit(5);
+        $this->assertCount(5, $stream);
+    }
+
+    public function testConcatOperation()
+    {
+        $result = Stream::of(1, 2, 3, 4)
+            ->concat(Stream::of(5, 6, 7, 8))
+            ->map(function ($e) {
+                return $e * 2;
+            })
+            ->limit(7)
+            ->toArray();
+
+        $this->assertEquals([2, 4, 6, 8, 10, 12, 14], $result);
+
+        $result = Stream::of(1, 2, 3, 4)
+            ->concat([5, 6])
+            ->concat(Stream::of(6, 7)
+                ->map(function ($e) {
+                    return $e + 1;
+                }))
+            ->map(function ($e) {
+                return $e * 2;
+            })
+            ->limit(7)
+            ->toArray();
+
+        $this->assertEquals([2, 4, 6, 8, 10, 12, 14], $result);
+    }
+
 }

@@ -130,6 +130,8 @@ $arrStream
 - `limit(int $limit): StreamInterface`
 - `skip(int $number): StreamInterface`
 - `distinct(?callable $distinctBy = null): StreamInterface`
+- `flatMap(?callable $operation = null): StreamInterface`
+- `concat(iterable $elements): StreamInterface`
 
 **Terminal operations**:
 

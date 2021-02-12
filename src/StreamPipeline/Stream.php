@@ -134,6 +134,31 @@ class Stream implements StreamInterface
     }
 
     /** @inheritDoc */
+    public function flatMap(?callable $operation = null): StreamInterface
+    {
+        $mapItem = $operation ?? Logical::identity();
+        return self::createStream(function () use ($mapItem): Generator {
+            foreach ($this->flow as $i => $item) {
+                yield from $mapItem($item, $i);
+            }
+        });
+    }
+
+    /** @inheritDoc */
+    public function concat(iterable $elements): StreamInterface
+    {
+        return self::createStream(function () use ($elements): Generator {
+            foreach ($this->flow as $item) {
+                yield $item;
+            }
+
+            foreach ($elements as $item) {
+                yield $item;
+            }
+        });
+    }
+
+    /** @inheritDoc */
     public function forEach(callable $callback): void
     {
         foreach ($this->flow as $i => $item) {
@@ -229,6 +254,12 @@ class Stream implements StreamInterface
         }
 
         return $accumulator;
+    }
+
+    /** @inheritDoc */
+    public function getIterator()
+    {
+        return $this->flow;
     }
 
     private static function createStream(callable $operation): StreamInterface
