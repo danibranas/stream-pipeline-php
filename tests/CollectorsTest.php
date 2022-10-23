@@ -1,6 +1,7 @@
 <?php
 
 
+use StreamPipeline\Operations\Objects;
 use StreamPipeline\Stream;
 use PHPUnit\Framework\TestCase;
 use StreamPipeline\Collectors;
@@ -22,6 +23,63 @@ final class CollectorsTest extends TestCase
         $result = Stream::of()
             ->limit(5)
             ->collect(Collectors::join(','));
-        $this->assertEquals(null, $result);
+        $this->assertEquals('', $result);
+    }
+
+    public function testSumCollector()
+    {
+        $result = Stream::of(1, 2, 3, 4, 5, 6, 7, 8, 9)
+            ->limit(5)
+            ->collect(Collectors::sum());
+        $this->assertEquals(15, $result);
+
+        $result = Stream::of()
+            ->limit(5)
+            ->collect(Collectors::sum());
+        $this->assertEquals(0, $result);
+    }
+
+    public function testGroupByCollector()
+    {
+        $data = [
+            [
+                'age' => 20,
+                'name' => 'Johny',
+            ],
+            (object) [
+                'age' => 20,
+                'name' => 'Mario',
+            ],
+            [
+                'age' => 30,
+                'name' => 'Anna',
+            ],
+            [
+                'age' => 30,
+                'name' => 'Zeus',
+            ],
+            (object) [
+                'age' => 20,
+                'name' => 'Rachel',
+            ],
+            (object) [
+                'age' => 40,
+                'name' => 'Tomas',
+            ],
+        ];
+
+        $result = Stream::fromIterable($data)
+            ->collect(Collectors::groupBy(Objects::get('age')));
+
+        $this->assertEquals([
+            20 => [$data[0], $data[1], $data[4]],
+            30 => [$data[2], $data[3]],
+            40 => [$data[5]],
+        ], $result);
+
+        $result = Stream::of()
+            ->limit(5)
+            ->collect(Collectors::groupBy());
+        $this->assertEquals([], $result);
     }
 }

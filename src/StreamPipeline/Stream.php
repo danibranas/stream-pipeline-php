@@ -245,11 +245,14 @@ class Stream implements StreamInterface
     /** @inheritDoc */
     public function collect(callable $collector)
     {
-        $accumulator = $this->flow->current();
+        $index = 0;
+        $firstItem = $this->flow->current();
+
+        $accumulator = $collector(null, $firstItem, $index);
         $this->flow->next();
 
         while ($this->flow->valid()) {
-            $accumulator = $collector($accumulator, $this->flow->current());
+            $accumulator = $collector($accumulator, $this->flow->current(), ++$index);
             $this->flow->next();
         }
 

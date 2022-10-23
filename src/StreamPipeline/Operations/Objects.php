@@ -52,6 +52,10 @@ final class Objects
     {
         $getterMethod = self::getGetterName($property);
         return function ($element) use ($getterMethod, $property) {
+            if (is_array($element)) {
+                return $element[$property] ?? null;
+            }
+
             if (method_exists($element, $getterMethod)) {
                 return $element->$getterMethod();
             }

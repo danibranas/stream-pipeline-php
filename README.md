@@ -111,7 +111,7 @@ The library exposes some common operations to better readability:
 $arrStream
     ->filter(Numbers::isEven())
     ->map(Numbers::plus(10))
-    ->toArray();
+    ->collect(Collectors::sum());
 ```
 
 ### _Stream_ Methods
@@ -144,3 +144,20 @@ $arrStream
 - `reduce(callable $operation, $initialValue)`
 - `toArray(): array`
 - `collect(callable $collector)`
+
+### Pre-defined Collectors
+
+There are pre-defined collector functions with some common operations.
+You can use them with the terminal operator `collect()`:
+
+- `Collectors::join(string $delimiter = '')`
+- `Collectors::sum(?callable $mapper = null)`
+- `Collectors::groupBy(?callable $classifier = null)`
+
+For example:
+
+```php
+Stream::of('a', 'b', 'c', 'd', 'e', 'f')
+    ->limit(5)
+    ->collect(Collectors::join(','));
+```

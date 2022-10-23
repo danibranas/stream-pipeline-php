@@ -331,14 +331,20 @@ final class StreamTest extends TestCase
     {
         $result = Stream::of("hi,", "hello,", "how", "are", "you?")
             ->skip(1)
-            ->collect(function ($accum, $item) {
+            ->collect(function ($accum, $item, int $index) {
+                if ($index < 1) {
+                    return $item;
+                }
                 return $accum . ' ' . $item;
             });
         $this->assertEquals('hello, how are you?', $result);
 
         $result = Stream::of()
             ->skip(1)
-            ->collect(function ($accum, $item) {
+            ->collect(function ($accum, $item, int $index) {
+                if ($index < 1) {
+                    return $item;
+                }
                 return $accum . ' ' . $item;
             });
         $this->assertEquals(null, $result);
