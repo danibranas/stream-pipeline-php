@@ -257,7 +257,7 @@ class Stream implements StreamInterface
     }
 
     /** @inheritDoc */
-    public function getIterator()
+    public function getIterator(): \Iterator
     {
         return $this->flow;
     }

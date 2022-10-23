@@ -46,7 +46,7 @@ final class Values
     public static function filterVar(string $filter, $options = null): callable
     {
         return function ($element) use ($filter, $options) {
-            return filter_var($element, $filter, $options);
+            return filter_var($element, $filter, $options ?? 0);
         };
     }
 }
