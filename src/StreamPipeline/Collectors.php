@@ -30,13 +30,17 @@ final class Collectors
         };
     }
 
-    public static function groupBy(?callable $classifier = null): callable
+    public static function groupBy(?callable $classifier = null, ?callable $mapper = null): callable
     {
         $classifierFunction = !is_null($classifier)
             ? $classifier
             : Logical::identity();
+        
+        $mapperFunction = !is_null($mapper)
+            ? $mapper
+            : Logical::identity();
 
-        return function ($accumulator, $item, int $index) use ($classifierFunction) {
+        return function ($accumulator, $item, int $index) use ($classifierFunction, $mapperFunction) {
             if ($index < 1) {
                 $accumulator = [];
             }
@@ -51,7 +55,7 @@ final class Collectors
                 $accumulator[$accumulatorIndex] = [];
             }
 
-            $accumulator[$accumulatorIndex][] = $item;
+            $accumulator[$accumulatorIndex][] = $mapperFunction($item);
 
             return $accumulator;
         };

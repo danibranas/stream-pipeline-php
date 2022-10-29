@@ -81,5 +81,13 @@ final class CollectorsTest extends TestCase
             ->limit(5)
             ->collect(Collectors::groupBy());
         $this->assertEquals([], $result);
+
+        $result = Stream::fromIterable($data)
+            ->collect(Collectors::groupBy(Objects::get('age'), Objects::get('name')));
+        $this->assertEquals([
+            20 => [$data[0]['name'], $data[1]->name, $data[4]->name],
+            30 => [$data[2]['name'], $data[3]['name']],
+            40 => [$data[5]->name],
+        ], $result);
     }
 }

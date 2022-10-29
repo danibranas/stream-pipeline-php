@@ -143,7 +143,7 @@ $arrStream
 - `noneMatch(callable $condition): bool`
 - `reduce(callable $operation, $initialValue)`
 - `toArray(): array`
-- `collect(callable $collector)`
+- `collect(?callable $collector, ?callable $mapper)`
 
 ### Pre-defined Collectors
 
@@ -152,7 +152,7 @@ You can use them with the terminal operator `collect()`:
 
 - `Collectors::join(string $delimiter = '')`
 - `Collectors::sum(?callable $mapper = null)`
-- `Collectors::groupBy(?callable $classifier = null)`
+- `Collectors::groupBy(?callable $classifier = null, ?callable $mapper = null)`
 
 For example:
 
