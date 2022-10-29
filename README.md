@@ -143,7 +143,7 @@ $arrStream
 - `noneMatch(callable $condition): bool`
 - `reduce(callable $operation, $initialValue)`
 - `toArray(): array`
-- `collect(?callable $collector, ?callable $mapper)`
+- `collect(?callable $collector)`
 
 ### Pre-defined Collectors
 
