@@ -122,7 +122,7 @@ final class ObjectsTest extends TestCase
             ->map(Objects::castObject())
             ->findFirst();
 
-        $this->assertEquals((object) ['a' => 12], $result);
+        $this->assertEquals((object)['a' => 12], $result);
     }
 
     public function testGetOperation()
@@ -144,6 +144,16 @@ final class ObjectsTest extends TestCase
             ->findFirst();
 
         $this->assertNull($result);
+
+        $result = Stream::of(new User('David'))
+            ->map(Objects::get('prop3'))
+            ->findFirst();
+        $this->assertEquals(50, $result);
+
+        $result = Stream::of(new User('David'))
+            ->map(Objects::get('prop3', false))
+            ->findFirst();
+        $this->assertEquals(40, $result);
     }
 
     private function getUsers(string ...$names): array

@@ -48,15 +48,22 @@ final class Objects
         };
     }
 
-    public static function get(string $property): callable
+    /**
+     * Gets a property from an object or array, or null otherwise. If $useGetter is enabled, it will try to use first
+     * a matching getter method.
+     * @param string $property the property name.
+     * @param bool $useGetter if true (default), it will try to use a properly getter method first if it exists.
+     * @return callable a callable function.
+     */
+    public static function get(string $property, bool $useGetter = true): callable
     {
         $getterMethod = self::getGetterName($property);
-        return function ($element) use ($getterMethod, $property) {
+        return function ($element) use ($getterMethod, $property, $useGetter) {
             if (is_array($element)) {
                 return $element[$property] ?? null;
             }
 
-            if (method_exists($element, $getterMethod)) {
+            if ($useGetter && method_exists($element, $getterMethod)) {
                 return $element->$getterMethod();
             }
 
