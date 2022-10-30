@@ -2,7 +2,9 @@
 
 namespace StreamPipeline\Iterators;
 
-
+/**
+ * A number generator.
+ */
 class NumberGenerator
 {
     /** @var int|float */
@@ -10,7 +12,7 @@ class NumberGenerator
 
     /**
      * NumberGenerator constructor.
-     * @param int|float $step
+     * @param int|float $step the step to get the next number in the generator.
      */
     public function __construct($step = 1)
     {
@@ -18,8 +20,9 @@ class NumberGenerator
     }
 
     /**
-     * @param int|float $element
-     * @return float|int
+     * Gets the next element in the series.
+     * @param int|float $element the current element.
+     * @return float|int the next element.
      */
     public function __invoke($element)
     {

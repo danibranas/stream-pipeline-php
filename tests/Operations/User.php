@@ -7,6 +7,7 @@ final class User
     private $id;
     private $name;
     public $prop1 = 10;
+    public $prop3 = 40;
 
     public function __construct(string $name, int $id = 1)
     {
@@ -27,5 +28,11 @@ final class User
     public function getProp2(): int
     {
         return 20;
+    }
+
+
+    public function getProp3(): int
+    {
+        return 50;
     }
 }

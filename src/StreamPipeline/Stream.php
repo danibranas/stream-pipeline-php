@@ -2,6 +2,7 @@
 
 namespace StreamPipeline;
 
+use Iterator;
 use StreamPipeline\Operations\Logical;
 use Generator;
 
@@ -12,9 +13,7 @@ use Generator;
  */
 class Stream implements StreamInterface
 {
-
-    /** @var Generator */
-    private $flow;
+    private Generator $flow;
 
     public function __construct(Generator $flow)
     {
@@ -260,7 +259,7 @@ class Stream implements StreamInterface
     }
 
     /** @inheritDoc */
-    public function getIterator(): \Iterator
+    public function getIterator(): Iterator
     {
         return $this->flow;
     }

@@ -3,9 +3,18 @@
 
 namespace StreamPipeline\Operations;
 
-
+/**
+ * Objects operations.
+ *
+ * This class methods can be used to better readability in Stream flows.
+ */
 final class Objects
 {
+    /**
+     * Checks if the element has the provided property.
+     * @param string $property the property name
+     * @return callable a callable function.
+     */
     public static function hasProperty(string $property): callable
     {
         return function ($element) use ($property): bool {
@@ -13,6 +22,12 @@ final class Objects
         };
     }
 
+    /**
+     * Checks if the element has the provided property and it matches with the provided value.
+     * @param string $property the property name.
+     * @param mixed $value the value to compare with.
+     * @return callable a callable function.
+     */
     public static function hasPropertyWithValue(string $property, $value): callable
     {
         return function ($element) use ($property, $value): bool {
@@ -20,6 +35,12 @@ final class Objects
         };
     }
 
+    /**
+     * Calls a method within the element object.
+     * @param string $method the method name.
+     * @param mixed ...$args the method arguments.
+     * @return callable a callable function.
+     */
     public static function callMethod(string $method, ...$args): callable
     {
         return function ($element) use ($method, $args) {
@@ -27,6 +48,11 @@ final class Objects
         };
     }
 
+    /**
+     * Constructs a new instance of the given class name by passing the element as the first argument.
+     * @param string $classname the class name to construct.
+     * @return callable a callable function.
+     */
     public static function construct(string $classname): callable
     {
         return function ($element) use ($classname) {
@@ -34,6 +60,11 @@ final class Objects
         };
     }
 
+    /**
+     * Checks if the element is an instance of the provided class name.
+     * @param string $classname the class name to compare with.
+     * @return callable a callable function.
+     */
     public static function isInstanceOf(string $classname): callable
     {
         return function ($element) use ($classname): string {
@@ -41,6 +72,10 @@ final class Objects
         };
     }
 
+    /**
+     * Casts the element to an object.
+     * @return callable a callable function.
+     */
     public static function castObject(): callable
     {
         return function ($element): object {
