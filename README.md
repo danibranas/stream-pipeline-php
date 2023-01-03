@@ -114,6 +114,8 @@ $arrStream
     ->collect(Collectors::sum());
 ```
 
+Please see the Javadoc for more information.
+
 ### _Stream_ Methods
 
 **Initialization static operations**:
@@ -162,3 +164,24 @@ Stream::of('a', 'b', 'c', 'd', 'e', 'f')
     ->limit(5)
     ->collect(Collectors::join(','));
 ```
+
+### Iterator classes
+
+- `NumberGenerator`: a number generator with an optional step.
+
+Example:
+
+```php
+Stream::iterate(1, new NumberGenerator(1))
+    ->filter(Numbers::isEven())
+    ->skip(5)
+    ->limit(11);
+```
+
+### Operation classes
+
+- `Logical`: logical operations (such as identity, true, false...).
+- `Numbers`: numbers operations.
+- `Objects`: generic objects operations.
+- `Strings`: string utils and functions.
+- `Values`: polimorphic values operations.
