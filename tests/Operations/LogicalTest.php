@@ -29,4 +29,22 @@ final class LogicalTest extends TestCase
 
         $this->assertEquals([0, false], $result);
     }
+
+    public function testTrueOperation()
+    {
+        $result = Stream::of(1, true, 0, 'ok', false)
+            ->filter(Logical::true())
+            ->toArray();
+
+        $this->assertEquals([1, true, 0, 'ok', false], $result);
+    }
+
+    public function testFalseOperation()
+    {
+        $result = Stream::of(1, true, 0, 'ok', false)
+            ->filter(Logical::false())
+            ->toArray();
+
+        $this->assertEquals([], $result);
+    }
 }

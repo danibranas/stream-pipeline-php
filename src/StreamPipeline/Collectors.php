@@ -80,4 +80,54 @@ final class Collectors
             return $accumulator;
         };
     }
+
+    /**
+     * Reduces the Stream by grouping the elements into an associative array with a reduced value.
+     * @param callable|null $classifier an optional classifier function that can be passed to get the classifier index.
+     * @param callable|null $mapper an optional mapper function that can be passed to map que resulting elements.
+     * @param callable|null $reducer an optional mapper function that reduces the elements with the same key.
+     * It receives the existing element and the new one as arguments. By default, last value is always used.
+     * @return callable a callable function.
+     */
+    public static function groupAndReduceBy(
+        ?callable $classifier = null,
+        ?callable $mapper = null,
+        ?callable $reducer = null
+    ): callable
+    {
+        $classifierFunction = !is_null($classifier)
+            ? $classifier
+            : Logical::identity();
+
+        $mapperFunction = !is_null($mapper)
+            ? $mapper
+            : Logical::identity();
+
+        $reducerFunction = !is_null($reducer)
+            ? $reducer
+            : function ($existingElement, $newElement) {
+                return $newElement;
+            };
+
+        return function ($accumulator, $item, int $index) use ($classifierFunction, $mapperFunction, $reducerFunction) {
+            if ($index < 1) {
+                $accumulator = [];
+            }
+
+            if (is_null($item)) {
+                return $accumulator;
+            }
+
+            $accumulatorIndex = $classifierFunction($item);
+            $newElement = $mapperFunction($item);
+
+            if (!isset($accumulator[$accumulatorIndex])) {
+                $accumulator[$accumulatorIndex] = $newElement;
+            } else {
+                $accumulator[$accumulatorIndex] = $reducerFunction($accumulator[$accumulatorIndex], $newElement);
+            }
+
+            return $accumulator;
+        };
+    }
 }

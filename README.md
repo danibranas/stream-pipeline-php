@@ -153,6 +153,7 @@ You can use them with the terminal operator `collect()`:
 - `Collectors::join(string $delimiter = '')`
 - `Collectors::sum(?callable $mapper = null)`
 - `Collectors::groupBy(?callable $classifier = null, ?callable $mapper = null)`
+- `Collectors::groupAndReduceBy(?callable $keysMapper = null, ?callable $valuesMapper = null, ?callable $reducer = null)`
 
 For example:
 

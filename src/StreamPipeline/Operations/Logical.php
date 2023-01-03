@@ -34,4 +34,26 @@ final class Logical
                 : !$element;
         };
     }
+
+    /**
+     * Returns a true value.
+     * @return callable a callable function.
+     */
+    public static function true(): callable
+    {
+        return function (): bool {
+            return true;
+        };
+    }
+
+    /**
+     * Returns a false value.
+     * @return callable a callable function.
+     */
+    public static function false(): callable
+    {
+        return function (): bool {
+            return false;
+        };
+    }
 }
