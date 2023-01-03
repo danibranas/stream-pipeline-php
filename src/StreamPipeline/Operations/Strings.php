@@ -114,4 +114,25 @@ final class Strings
             return is_string($element);
         };
     }
+
+    /**
+     * Replaces all occurrences of the search string with the replacement string.
+     * Internally, it uses the <code>str_replace</code> built-in function.
+     * @param string|string[] $search The value being searched for, otherwise known as the needle.
+     * An array may be used to designate multiple needles.
+     * @param string|string[] $replace The replacement value that replaces found search values.
+     * An array may be used to designate multiple replacements.
+     * @return callable a callable function.
+     * @see str_replace()
+     */
+    public static function replace($search, $replace): callable
+    {
+        return function ($element) use ($search, $replace) {
+            if (!is_string($element) && !is_array($element)) {
+                return $element;
+            }
+
+            return str_replace($search, $replace, $element);
+        };
+    }
 }

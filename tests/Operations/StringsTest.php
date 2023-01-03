@@ -88,4 +88,19 @@ final class StringsTest extends TestCase
 
         $this->assertEquals(['good', 'morning', 'stars', 'Move'], $result);
     }
+
+    public function testReplace()
+    {
+        $result = Stream::of('good', 12, 'morning', null, [], 'stars', 'Move')
+            ->map(Strings::replace('o', 'a'))
+            ->toArray();
+
+        $this->assertEquals(['gaad', 12, 'marning', null, [], 'stars', 'Mave'], $result);
+
+        $result = Stream::of('good', 12, 'morning', null, [], 'stars', 'Move')
+            ->map(Strings::replace(['o', 'g'], 'a'))
+            ->toArray();
+
+        $this->assertEquals(['aaad', 12, 'marnina', null, [], 'stars', 'Mave'], $result);
+    }
 }
