@@ -168,9 +168,10 @@ interface StreamInterface extends Countable, IteratorAggregate
     /**
      * Returns an array containing the elements of this pipeline.
      *
+     * @param bool $preserveKeys if true, preserves the original keys of the original array. False by default.
      * @return array the result value.
      */
-    public function toArray(): array;
+    public function toArray(bool $preserveKeys = false): array;
 
     /**
      * Executes a collector function on each processed element of the pipeline, resulting in a single output value.

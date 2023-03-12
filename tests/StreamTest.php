@@ -42,6 +42,31 @@ final class StreamTest extends TestCase
         $this->assertEquals([2, 4, 6, 8, 10], $result);
     }
 
+    public function testToArrayWithKeysOperation()
+    {
+        $result = Stream::fromIterable([
+            'a' => 1,
+            'b' => 2,
+            'c' => 3,
+            'd' => 4,
+        ])
+            ->filter(Numbers::isEven())
+            ->toArray();
+
+        $this->assertEquals([2, 4], $result);
+
+        $result = Stream::fromIterable([
+            'a' => 1,
+            'b' => 2,
+            'c' => 3,
+            'd' => 4,
+        ])
+            ->filter(Numbers::isEven())
+            ->toArray(true);
+
+        $this->assertEquals(['b' => 2, 'd' => 4], $result);
+    }
+
     public function testInfiniteIterate()
     {
         $result = Stream::iterate(1, new NumberGenerator(1))

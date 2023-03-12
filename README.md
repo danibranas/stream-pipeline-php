@@ -144,8 +144,18 @@ Please see the Javadoc for more information.
 - `allMatch(callable $condition): bool`
 - `noneMatch(callable $condition): bool`
 - `reduce(callable $operation, $initialValue)`
-- `toArray(): array`
+- `toArray(bool $preserveKeys = false): array`
 - `collect(?callable $collector)`
+
+All callable functions receive: `function ($currentElement, $index, $originalIndex)` as arguments. Example:
+
+```php
+$arrStream
+    ->map(function ($elem, $i, $index) {
+        return ...
+    })
+    ->toArray();
+```
 
 ### Pre-defined Collectors
 

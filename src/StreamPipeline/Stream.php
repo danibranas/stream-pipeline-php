@@ -30,8 +30,8 @@ class Stream implements StreamInterface
     public static function fromIterable(iterable $collection): StreamInterface
     {
         return self::createStream(function () use ($collection): Generator {
-            foreach ($collection as $element) {
-                yield $element;
+            foreach ($collection as $key => $element) {
+                yield $key => $element;
             }
         });
     }
@@ -53,8 +53,9 @@ class Stream implements StreamInterface
     public function map(callable $operation): StreamInterface
     {
         return self::createStream(function () use ($operation): Generator {
-            foreach ($this->flow as $i => $item) {
-                yield $operation($item, $i);
+            $i = 0;
+            foreach ($this->flow as $key => $item) {
+                yield $key => $operation($item, $i++, $key);
             }
         });
     }
@@ -63,9 +64,10 @@ class Stream implements StreamInterface
     public function filter(callable $operation): StreamInterface
     {
         return self::createStream(function () use ($operation): Generator {
-            foreach ($this->flow as $i => $item) {
-                if ($operation($item, $i)) {
-                    yield $item;
+            $i = 0;
+            foreach ($this->flow as $key => $item) {
+                if ($operation($item, $i++, $key)) {
+                    yield $key => $item;
                 }
             }
         });
@@ -75,9 +77,10 @@ class Stream implements StreamInterface
     public function peek(callable $operation): StreamInterface
     {
         return self::createStream(function () use ($operation): Generator {
-            foreach ($this->flow as $i => $item) {
-                $operation($item, $i);
-                yield $item;
+            $i = 0;
+            foreach ($this->flow as $key => $item) {
+                $operation($item, $i ++, $key);
+                yield $key => $item;
             }
         });
     }
@@ -87,13 +90,13 @@ class Stream implements StreamInterface
     {
         return self::createStream(function () use ($limit): Generator {
             $i = 0;
-            foreach ($this->flow as $item) {
+            foreach ($this->flow as $key => $item) {
                 if ($i > $limit - 1) {
                     return;
                 }
 
                 $i += 1;
-                yield $item;
+                yield $key => $item;
             }
         });
     }
@@ -103,13 +106,13 @@ class Stream implements StreamInterface
     {
         return self::createStream(function () use ($number): Generator {
             $i = 0;
-            foreach ($this->flow as $item) {
+            foreach ($this->flow as $key => $item) {
                 if ($i < $number) {
                     $i += 1;
                     continue;
                 }
 
-                yield $item;
+                yield $key => $item;
             }
         });
     }
@@ -127,7 +130,7 @@ class Stream implements StreamInterface
                 }
 
                 $elements[$key] = true;
-                yield $item;
+                yield $key => $item;
             }
         });
     }
@@ -137,8 +140,9 @@ class Stream implements StreamInterface
     {
         $mapItem = $operation ?? Logical::identity();
         return self::createStream(function () use ($mapItem): Generator {
-            foreach ($this->flow as $i => $item) {
-                yield from $mapItem($item, $i);
+            $i = 0;
+            foreach ($this->flow as $key => $item) {
+                yield from $mapItem($item, $i++, $key);
             }
         });
     }
@@ -147,12 +151,12 @@ class Stream implements StreamInterface
     public function concat(iterable $elements): StreamInterface
     {
         return self::createStream(function () use ($elements): Generator {
-            foreach ($this->flow as $item) {
-                yield $item;
+            foreach ($this->flow as $key => $item) {
+                yield $key => $item;
             }
 
-            foreach ($elements as $item) {
-                yield $item;
+            foreach ($elements as $key => $item) {
+                yield $key => $item;
             }
         });
     }
@@ -160,8 +164,9 @@ class Stream implements StreamInterface
     /** @inheritDoc */
     public function forEach(callable $callback): void
     {
-        foreach ($this->flow as $i => $item) {
-            $callback($item, $i);
+        $i = 0;
+        foreach ($this->flow as $key => $item) {
+            $callback($item, $i++, $key);
         }
     }
 
@@ -184,8 +189,9 @@ class Stream implements StreamInterface
     /** @inheritDoc */
     public function anyMatch(callable $condition): bool
     {
-        foreach ($this->flow as $i => $item) {
-            if ($condition($item, $i)) {
+        $i = 0;
+        foreach ($this->flow as $key => $item) {
+            if ($condition($item, $i++, $key)) {
                 return true;
             }
         }
@@ -196,8 +202,9 @@ class Stream implements StreamInterface
     /** @inheritDoc */
     public function allMatch(callable $condition): bool
     {
-        foreach ($this->flow as $item) {
-            if (!$condition($item)) {
+        $i = 0;
+        foreach ($this->flow as $key => $item) {
+            if (!$condition($item, $i++, $key)) {
                 return false;
             }
         }
@@ -208,8 +215,9 @@ class Stream implements StreamInterface
     /** @inheritDoc */
     public function noneMatch(callable $condition): bool
     {
-        foreach ($this->flow as $i => $item) {
-            if ($condition($item, $i)) {
+        $i = 0;
+        foreach ($this->flow as $key => $item) {
+            if ($condition($item, $i++, $key)) {
                 return false;
             }
         }
@@ -222,20 +230,25 @@ class Stream implements StreamInterface
     {
         $accumulator = $initialValue;
 
-        foreach ($this->flow as $i => $item) {
-            $accumulator = $operation($accumulator, $item, $i);
+        $i = 0;
+        foreach ($this->flow as $key => $item) {
+            $accumulator = $operation($accumulator, $item, $i++, $key);
         }
 
         return $accumulator;
     }
 
     /** @inheritDoc */
-    public function toArray(): array
+    public function toArray(bool $preserveKeys = false): array
     {
         $result = [];
 
-        foreach ($this->flow as $item) {
-            $result[] = $item;
+        foreach ($this->flow as $key => $item) {
+            if ($preserveKeys) {
+                $result[$key] = $item;
+            } else {
+                $result[] = $item;
+            }
         }
 
         return $result;
