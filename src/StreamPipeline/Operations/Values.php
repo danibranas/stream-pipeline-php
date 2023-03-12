@@ -82,4 +82,44 @@ final class Values
             return filter_var($element, $filter, $options ?? 0);
         };
     }
+
+    /**
+     * Checks whether the element value exists in an array.
+     * @param array $values the matching values.
+     * @param bool $strict if true, the comparison is strict.
+     * @return callable a callable function.
+     */
+    public static function in(array $values, bool $strict = false): callable
+    {
+        $keys = self::getKeySet($values);
+        return function ($element) use ($keys, $strict): bool {
+            return $strict
+                ? isset($keys[$element]) && $keys[$element] === $element
+                : isset($keys[$element]) && $keys[$element] == $element;
+        };
+    }
+
+    /**
+     * Checks whether the element original key exists in an array.
+     * @param array $values the matching values.
+     * @return callable a callable function.
+     */
+    public static function keyIn(array $values): callable
+    {
+        $keys = self::getKeySet($values);
+        return function ($element, $i, $key) use ($keys): bool {
+            return isset($keys[$key]) && $keys[$key] == $key;
+        };
+    }
+
+    private static function getKeySet(array $values): array
+    {
+        $keys = [];
+
+        foreach ($values as $value) {
+            $keys[$value] = $value;
+        }
+
+        return $keys;
+    }
 }
