@@ -189,4 +189,23 @@ interface StreamInterface extends Countable, IteratorAggregate
      * @return S the result value.
      */
     public function collect(callable $collector);
+
+    /**
+     * Returns elements from the start of the pipeline as long as the given condition is true.
+     * Stops processing at the first element that fails the condition.
+     *
+     * @param callable(T): bool $callback Condition to evaluate each element
+     * @return StreamInterface<T> Pipeline containing elements up to the first false
+     */
+    public function takeWhile(callable $callback): StreamInterface;
+
+    /**
+     * Skips elements from the start of the pipeline while the given condition is true,
+     * then returns the rest of the elements.
+     *
+     * @param callable(T): bool $callback Condition to evaluate each element
+     * @return StreamInterface<T> Pipeline containing the remaining elements after the first false
+     */
+    public function dropWhile(callable $callback): StreamInterface;
+
 }

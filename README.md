@@ -134,6 +134,8 @@ Please see the Javadoc for more information.
 - `distinct(?callable $distinctBy = null): StreamInterface`
 - `flatMap(?callable $operation = null): StreamInterface`
 - `concat(iterable $elements): StreamInterface`
+- `takeWhile(callable $operation): StreamInterface`
+- `dropWhile(callable $operation): StreamInterface`
 
 **Terminal operations**:
 

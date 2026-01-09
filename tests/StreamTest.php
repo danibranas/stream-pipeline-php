@@ -469,4 +469,40 @@ final class StreamTest extends TestCase
         $this->assertEquals([2, 4, 6, 8, 10, 12, 14], $result);
     }
 
+    public function testTakeWhileOperation()
+    {
+        $result = Stream::of(1, 2, 3, 4, 1)
+            ->takeWhile(fn(int $x) => $x < 4)
+            ->toArray();
+        $this->assertEquals([1, 2, 3], $result);
+
+        $result = Stream::of(1, 2, 3, 4, 1)
+            ->takeWhile(fn(int $x) => $x < 50)
+            ->toArray();
+        $this->assertEquals([1, 2, 3, 4, 1], $result);
+
+        $result = Stream::of(6, 1, 2, 3, 4)
+            ->takeWhile(fn(int $x) => $x < 4)
+            ->toArray();
+        $this->assertEquals([], $result);
+    }
+
+    public function testDropWhileOperation()
+    {
+        $result = Stream::of(1, 2, 3, 4, 1)
+            ->dropWhile(fn(int $x) => $x < 3)
+            ->toArray();
+        $this->assertEquals([3, 4, 1], $result);
+
+        $result = Stream::of(1, 2, 3, 4)
+            ->dropWhile(fn(int $x) => $x < 5)
+            ->toArray();
+        $this->assertEquals([], $result);
+
+        $result = Stream::of(1, 2, 3, 4)
+            ->dropWhile(fn(int $x) => $x < 1)
+            ->toArray();
+        $this->assertEquals([1, 2, 3, 4], $result);
+    }
+
 }
