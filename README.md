@@ -129,6 +129,7 @@ Please see the Javadoc for more information.
 - `map(callable $operation): StreamInterface`
 - `filter(callable $operation): StreamInterface`
 - `peek(callable $operation): StreamInterface`
+- `tap(callable $operation): StreamInterface` (alias of `peek`).
 - `limit(int $limit): StreamInterface`
 - `skip(int $number): StreamInterface`
 - `distinct(?callable $distinctBy = null): StreamInterface`

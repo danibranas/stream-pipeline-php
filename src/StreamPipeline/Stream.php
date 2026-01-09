@@ -86,6 +86,12 @@ class Stream implements StreamInterface
     }
 
     /** @inheritDoc */
+    public function tap(callable $operation): StreamInterface
+    {
+        return $this->peek($operation);
+    }
+
+    /** @inheritDoc */
     public function limit(int $limit): StreamInterface
     {
         return self::createStream(function () use ($limit): Generator {

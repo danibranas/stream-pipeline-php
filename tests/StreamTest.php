@@ -144,6 +144,24 @@ final class StreamTest extends TestCase
             ->toArray();
     }
 
+    public function testTapOperation()
+    {
+        $expectedPeek1 = ["a1", "a2", "b1", "b2", "b3", "c1", "c3"];
+        $expectedPeek2 = ["b1", "b2", "b3"];
+
+        Stream::of("a1", "a2", "b1", "b2", "b3", "c1", "c3")
+            ->tap(function ($e, $i) use ($expectedPeek1) {
+                $this->assertEquals($expectedPeek1[$i], $e);
+            })
+            ->filter(function ($e) {
+                return substr($e, 0, 1) === 'b';
+            })
+            ->tap(function ($e, $i) use ($expectedPeek2) {
+                $this->assertEquals($expectedPeek2[$i], $e);
+            })
+            ->toArray();
+    }
+
     public function testLimitOperation()
     {
         $result = Stream::of("a1", "a2", "b1", "b2", "b3", "c1", "c3")

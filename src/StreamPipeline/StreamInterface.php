@@ -70,6 +70,15 @@ interface StreamInterface extends Countable, IteratorAggregate
     public function peek(callable $operation): StreamInterface;
 
     /**
+     * Alias for {@see peek}.
+     *
+     * @param callable(T): void $operation a function that receives each element. The returned value is ignored
+     * @return StreamInterface<T> the new pipeline.
+     * @see peek
+     */
+    public function tap(callable $operation): StreamInterface;
+
+    /**
      * Returns a pipeline consisting of the n first elements.
      *
      * @param int $limit maximum number of elements
