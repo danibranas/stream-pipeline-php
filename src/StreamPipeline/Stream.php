@@ -79,10 +79,16 @@ class Stream implements StreamInterface
         return self::createStream(function () use ($operation): Generator {
             $i = 0;
             foreach ($this->flow as $key => $item) {
-                $operation($item, $i ++, $key);
+                $operation($item, $i++, $key);
                 yield $key => $item;
             }
         });
+    }
+
+    /** @inheritDoc */
+    public function tap(callable $operation): StreamInterface
+    {
+        return $this->peek($operation);
     }
 
     /** @inheritDoc */
@@ -269,6 +275,39 @@ class Stream implements StreamInterface
         }
 
         return $accumulator;
+    }
+
+    /** @inheritDoc */
+    public function takeWhile(callable $callback): StreamInterface
+    {
+        return self::createStream(function () use ($callback): Generator {
+            $i = 0;
+            foreach ($this->flow as $key => $item) {
+                if (!$callback($item, $i++, $key)) {
+                    // Stop processing remaining elements
+                    return;
+                }
+
+                yield $key => $item;
+            }
+        });
+    }
+
+    /** @inheritDoc */
+    public function dropWhile(callable $callback): StreamInterface
+    {
+        return self::createStream(function () use ($callback): Generator {
+            $i = 0;
+            $matched = false;
+            foreach ($this->flow as $key => $item) {
+                if (!$matched && $callback($item, $i++, $key)) {
+                    continue;
+                }
+
+                $matched = true;
+                yield $key => $item;
+            }
+        });
     }
 
     /** @inheritDoc */

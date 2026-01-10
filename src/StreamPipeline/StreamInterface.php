@@ -9,22 +9,24 @@ use IteratorAggregate;
  * Interface StreamInterface
  *
  * A sequence of elements supporting sequential and aggregate operations.
+ *
+ * @template T element type.
  */
 interface StreamInterface extends Countable, IteratorAggregate
 {
     /**
      * Returns a pipeline whose elements are the specified values.
      *
-     * @param mixed ...$elements elements of the pipeline
-     * @return StreamInterface the new pipeline.
+     * @param T $elements elements of the pipeline
+     * @return StreamInterface<T> the new pipeline.
      */
     public static function of(...$elements): StreamInterface;
 
     /**
      * Returns a pipeline whose elements are the elements from the specified iterable.
      *
-     * @param iterable $collection elements of the pipeline
-     * @return StreamInterface the new pipeline.
+     * @param iterable<T> $collection elements of the pipeline
+     * @return StreamInterface<T> the new pipeline.
      */
     public static function fromIterable(iterable $collection): StreamInterface;
 
@@ -33,8 +35,8 @@ interface StreamInterface extends Countable, IteratorAggregate
      * step operation.
      *
      * @param int|float $initialValue the initial value.
-     * @param callable $stepOperation a function that receives the current value and returns the next value.
-     * @return StreamInterface the new pipeline.
+     * @param callable(int|float): T $stepOperation a function that receives the current value and returns the next value.
+     * @return StreamInterface<T> the new pipeline.
      */
     public static function iterate($initialValue, callable $stepOperation): StreamInterface;
 
@@ -43,16 +45,17 @@ interface StreamInterface extends Countable, IteratorAggregate
      *
      * The function receives the element as first parameter and the key as second parameter.
      *
-     * @param callable $operation The function to apply to each element.
-     * @return StreamInterface the new pipeline.
+     * @template R result type.
+     * @param callable(T): R $operation The function to apply to each element.
+     * @return StreamInterface<R> the new pipeline.
      */
     public function map(callable $operation): StreamInterface;
 
     /**
      * Returns a pipeline consisting of the elements of this pipeline that match the given function.
      *
-     * @param callable $operation the filter function that receives the value and returns a boolean.
-     * @return StreamInterface the new pipeline.
+     * @param callable(T): bool $operation the filter function that receives the value and returns a boolean.
+     * @return StreamInterface<T> the new pipeline.
      */
     public function filter(callable $operation): StreamInterface;
 
@@ -61,16 +64,25 @@ interface StreamInterface extends Countable, IteratorAggregate
      *
      * The main purpose of this method is to support debugging.
      *
-     * @param callable $operation a function that receives each element. The returned value is ignored
-     * @return StreamInterface the new pipeline.
+     * @param callable(T): void $operation a function that receives each element. The returned value is ignored
+     * @return StreamInterface<T> the new pipeline.
      */
     public function peek(callable $operation): StreamInterface;
+
+    /**
+     * Alias for {@see peek}.
+     *
+     * @param callable(T): void $operation a function that receives each element. The returned value is ignored
+     * @return StreamInterface<T> the new pipeline.
+     * @see peek
+     */
+    public function tap(callable $operation): StreamInterface;
 
     /**
      * Returns a pipeline consisting of the n first elements.
      *
      * @param int $limit maximum number of elements
-     * @return StreamInterface the new pipeline
+     * @return StreamInterface<T> the new pipeline
      */
     public function limit(int $limit): StreamInterface;
 
@@ -78,7 +90,7 @@ interface StreamInterface extends Countable, IteratorAggregate
      * Discards the first n items and returns a pipeline consisting of the remaining elements.
      *
      * @param int $number number of elements to skip
-     * @return StreamInterface the new pipeline
+     * @return StreamInterface<T> the new pipeline
      */
     public function skip(int $number): StreamInterface;
 
@@ -87,8 +99,9 @@ interface StreamInterface extends Countable, IteratorAggregate
      * If a distinct function is provided (for example, a <code>trim</code> function), it is used to convert the
      * element before the comparison. It does not affect the elements themselves.
      *
-     * @param callable|null $distinctBy an optional function to convert the element.
-     * @return StreamInterface the new pipeline
+     * @template S type of the distinct elements.
+     * @param callable(T):S|null $distinctBy an optional function to convert the element.
+     * @return StreamInterface<T> the new pipeline
      */
     public function distinct(?callable $distinctBy = null): StreamInterface;
 
@@ -96,8 +109,9 @@ interface StreamInterface extends Countable, IteratorAggregate
      * Returns a pipeline consisting of the results of replacing each element of this stream with the contents of a
      * iterable object produced by applying the provided mapping operation to each element.
      *
-     * @param callable|null $operation an optional function to convert the element.
-     * @return StreamInterface the new pipeline
+     * @template R result type.
+     * @param callable(T):iterable<R>|null $operation an optional function to convert the element.
+     * @return StreamInterface<R> the new pipeline
      */
     public function flatMap(?callable $operation = null): StreamInterface;
 
@@ -105,15 +119,16 @@ interface StreamInterface extends Countable, IteratorAggregate
      * Returns a pipeline consisting of the concatenation of the elements of this stream with the elements of the
      * provided iterable.
      *
-     * @param iterable|Stream $elements elements to concatenate.
-     * @return StreamInterface the new pipeline
+     * @template S type of the elements of the provided iterable.
+     * @param iterable<S>|Stream<S> $elements elements to concatenate.
+     * @return StreamInterface<T|S> the new pipeline
      */
     public function concat(iterable $elements): StreamInterface;
 
     /**
      * Returns the first element of this pipeline.
      *
-     * @return mixed|null the first element found or null otherwise
+     * @return T|null the first element found or null otherwise
      */
     public function findFirst();
 
@@ -124,7 +139,7 @@ interface StreamInterface extends Countable, IteratorAggregate
      * Iterate over the elements of this pipeline.
      * The callback function is called one time for each element and receives as parameters the element and the index.
      *
-     * @param callable $callback the callback function
+     * @param callable(T):void $callback the callback function
      */
     public function forEach(callable $callback): void;
 
@@ -133,7 +148,7 @@ interface StreamInterface extends Countable, IteratorAggregate
      * otherwise.
      *
      * @param callable $condition the check function. Receives the element as a parameter and must return a bool
-     * @return bool the result of the operation
+     * @return bool the r(T):boolesult of the operation
      */
     public function anyMatch(callable $condition): bool;
 
@@ -141,7 +156,7 @@ interface StreamInterface extends Countable, IteratorAggregate
      * Returns <code>true</code> if all the elements of this pipeline match the given condition, <code>false</code>
      * otherwise.
      *
-     * @param callable $condition the check function. Receives the element as a parameter and must return a bool
+     * @param callable(T):bool $condition the check function. Receives the element as a parameter and must return a bool
      * @return bool the result of the operation
      */
     public function allMatch(callable $condition): bool;
@@ -150,7 +165,7 @@ interface StreamInterface extends Countable, IteratorAggregate
      * Returns <code>true</code> if no elements of this pipeline match the given condition, <code>false</code>
      * otherwise.
      *
-     * @param callable $condition the check function. Receives the element as a parameter and must return a bool
+     * @param callable(T):bool $condition the check function. Receives the element as a parameter and must return a bool
      * @return bool the result of the operation
      */
     public function noneMatch(callable $condition): bool;
@@ -158,10 +173,11 @@ interface StreamInterface extends Countable, IteratorAggregate
     /**
      * Executes a reducer function on each processed element of the pipeline, resulting in a single output value.
      *
-     * @param callable $operation the reducer function. Receives the accumulator and the current element as params and
-     * must return the new accumulator value
-     * @param mixed $initialValue initial value
-     * @return mixed the result value.
+     * @template S result type.
+     * @param callable(S, T):S $operation the reducer function. Receives the accumulator and the current element as
+     * params and must return the new accumulator value
+     * @param S $initialValue initial value
+     * @return S the result value.
      */
     public function reduce(callable $operation, $initialValue);
 
@@ -169,7 +185,7 @@ interface StreamInterface extends Countable, IteratorAggregate
      * Returns an array containing the elements of this pipeline.
      *
      * @param bool $preserveKeys if true, preserves the original keys of the original array. False by default.
-     * @return array the result value.
+     * @return T[] the result value.
      */
     public function toArray(bool $preserveKeys = false): array;
 
@@ -177,8 +193,28 @@ interface StreamInterface extends Countable, IteratorAggregate
      * Executes a collector function on each processed element of the pipeline, resulting in a single output value.
      * This method is similar to {@see StreamInterface::reduce()}, but does not require an initial value.
      *
-     * @param callable $collector the collector function.
-     * @return mixed the result value.
+     * @template S result type.
+     * @param callable(S, T):S $collector the collector function.
+     * @return S the result value.
      */
     public function collect(callable $collector);
+
+    /**
+     * Returns elements from the start of the pipeline as long as the given condition is true.
+     * Stops processing at the first element that fails the condition.
+     *
+     * @param callable(T): bool $callback Condition to evaluate each element
+     * @return StreamInterface<T> Pipeline containing elements up to the first false
+     */
+    public function takeWhile(callable $callback): StreamInterface;
+
+    /**
+     * Skips elements from the start of the pipeline while the given condition is true,
+     * then returns the rest of the elements.
+     *
+     * @param callable(T): bool $callback Condition to evaluate each element
+     * @return StreamInterface<T> Pipeline containing the remaining elements after the first false
+     */
+    public function dropWhile(callable $callback): StreamInterface;
+
 }

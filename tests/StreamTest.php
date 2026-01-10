@@ -144,6 +144,24 @@ final class StreamTest extends TestCase
             ->toArray();
     }
 
+    public function testTapOperation()
+    {
+        $expectedPeek1 = ["a1", "a2", "b1", "b2", "b3", "c1", "c3"];
+        $expectedPeek2 = ["b1", "b2", "b3"];
+
+        Stream::of("a1", "a2", "b1", "b2", "b3", "c1", "c3")
+            ->tap(function ($e, $i) use ($expectedPeek1) {
+                $this->assertEquals($expectedPeek1[$i], $e);
+            })
+            ->filter(function ($e) {
+                return substr($e, 0, 1) === 'b';
+            })
+            ->tap(function ($e, $i) use ($expectedPeek2) {
+                $this->assertEquals($expectedPeek2[$i], $e);
+            })
+            ->toArray();
+    }
+
     public function testLimitOperation()
     {
         $result = Stream::of("a1", "a2", "b1", "b2", "b3", "c1", "c3")
@@ -467,6 +485,42 @@ final class StreamTest extends TestCase
             ->toArray();
 
         $this->assertEquals([2, 4, 6, 8, 10, 12, 14], $result);
+    }
+
+    public function testTakeWhileOperation()
+    {
+        $result = Stream::of(1, 2, 3, 4, 1)
+            ->takeWhile(fn(int $x) => $x < 4)
+            ->toArray();
+        $this->assertEquals([1, 2, 3], $result);
+
+        $result = Stream::of(1, 2, 3, 4, 1)
+            ->takeWhile(fn(int $x) => $x < 50)
+            ->toArray();
+        $this->assertEquals([1, 2, 3, 4, 1], $result);
+
+        $result = Stream::of(6, 1, 2, 3, 4)
+            ->takeWhile(fn(int $x) => $x < 4)
+            ->toArray();
+        $this->assertEquals([], $result);
+    }
+
+    public function testDropWhileOperation()
+    {
+        $result = Stream::of(1, 2, 3, 4, 1)
+            ->dropWhile(fn(int $x) => $x < 3)
+            ->toArray();
+        $this->assertEquals([3, 4, 1], $result);
+
+        $result = Stream::of(1, 2, 3, 4)
+            ->dropWhile(fn(int $x) => $x < 5)
+            ->toArray();
+        $this->assertEquals([], $result);
+
+        $result = Stream::of(1, 2, 3, 4)
+            ->dropWhile(fn(int $x) => $x < 1)
+            ->toArray();
+        $this->assertEquals([1, 2, 3, 4], $result);
     }
 
 }
