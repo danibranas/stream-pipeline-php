@@ -2,17 +2,48 @@
 
 # Stream Pipeline
 
+## What is it?
+
 A Stream based pipeline pattern implementation.
 
 The Pipeline pattern uses ordered stages to process a sequence of input values. Each implemented task is represented by
 a stage of the pipeline. You can think of pipelines as similar to assembly lines in a factory, where each item in the
 assembly line is constructed in stages.
 
+
+## Features
+
+- **Fluent API / Chaining**  
+  Chain methods like `map`, `filter`, `reduce` in a readable, functional style.
+
+- **Lazy evaluation**  
+  The pipeline **does not execute any operations until a terminal method** like `collect()` or `forEach()` is called.  
+  Each element is processed **one at a time through the entire chain**, minimizing memory usage and allowing infinite or very large data streams.
+
+- **Lightweight and simple**  
+  No dependencies and easy to integrate into any project.
+
+- **Common functional operations included**  
+  `map`, `filter`, `reduce`, `flatMap`, `distinct`, `limit`, `skip`...
+
+- **Generics support via docblocks**  
+  Compatible with Psalm/PHPStan for static type checking.
+
+- **Immutable style**  
+  Each operation returns a new pipeline instance, avoiding side effects.
+
+- **Works with any iterable**  
+  Supports arrays, generators, or any PHP iterable.
+
+- **Explicit terminal operations**  
+  Methods like `collect()` and `forEach()` allow controlled consumption of data.
+
 ## How it works
 
 Stream pipeline allows you to go from writing expressions like:
 
 ```php
+// Old way
 $input = [' B1 ', ' B2', 'a1 ', ' a2 ', 'a3', ' b1', ' b2', 'b3'];
 $elements = [];
 
