@@ -1,7 +1,7 @@
 {
   "name": "dbrans/stream-pipeline",
   "description": "A Stream based pipeline pattern implementation",
-  "version": "2.5.0",
+  "version": "2.5.1",
   "type": "library",
   "require": {
     "php": ">=7.4"
@@ -10,7 +10,7 @@
   "authors": [
     {
       "name": "Daniel V. Branas",
-      "email": "danibranas@outlook.com"
+      "email": "danibranas@users.noreply.github.com"
     }
   ],
   "minimum-stability": "stable",

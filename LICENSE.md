@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2021 danibranas
+Copyright (c) 2026 danibranas
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
