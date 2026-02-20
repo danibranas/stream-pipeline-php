@@ -23,7 +23,7 @@ final class LogicalTest extends TestCase
     {
         $result = Stream::of(1, true, 0, 'ok', false)
             ->filter(Logical::not(function ($e) {
-                return (boolean) $e;
+                return (bool) $e;
             }))
             ->toArray();
 
