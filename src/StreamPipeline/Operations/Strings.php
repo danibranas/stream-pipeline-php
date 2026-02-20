@@ -83,7 +83,7 @@ final class Strings
      * @param int|null $length the desired output length.
      * @return callable a callable function.
      */
-    public static function substr(int $offset, int $length = null): callable
+    public static function substr(int $offset, ?int $length = null): callable
     {
         return function ($element) use ($offset, $length) {
             return substr($element, $offset, $length);
